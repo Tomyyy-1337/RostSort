@@ -124,6 +124,9 @@ fn replace_ident(ident: Ident) -> Option<TokenTree> {
         "größe_von" | "groesse_von" => "size_of",
         "aus_rohen_stücken" | "aus_rohen_stuecken" => "from_raw_parts",
         "lese" => "read",
+        "zeit" => "time",
+        "SystemZeit" => "SystemTime",
+        "zeiger" => "ptr",
         
         _ => &ident_str,
     };
