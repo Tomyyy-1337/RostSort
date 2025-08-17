@@ -1,0 +1,8 @@
+[package]
+name = "rost_test"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rost = { path = "./rost_proc_macro" }
+rand = "0.9.2"
