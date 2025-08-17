@@ -17,7 +17,7 @@ rost::rost! {
 
         entspreche ergebis {
             Gut(_) => ausgabe!("Zeit für Zähl-Sortierung: {:?}", dauer),
-            Fehler(FehlerArt::TypeTooLarge) => {
+            Fehler(FehlerArt::TypZuGroß) => {
                 ausgabe!("Der Typ ist zu groß für die Zähl-Sortierung!");
                 zurückgebe;
             }
@@ -41,7 +41,7 @@ rost::rost! {
         {
             lass anzahl_stücke = größe_von::<T>() * 8;
             wenn anzahl_stücke > 32 {
-                zurückgebe Fehler(FehlerArt::TypeTooLarge);
+                zurückgebe Fehler(FehlerArt::TypZuGroß);
             }
 
             lass anzahl_eimer = 1 << anzahl_stücke;
@@ -64,6 +64,6 @@ rost::rost! {
     }
 
     aufzählung FehlerArt {
-        TypeTooLarge,
+        TypZuGroß,
     }
 }   
