@@ -1,9 +1,11 @@
+use std::usize;
+
 rost::rost! { 
     nutze rand::zufall;
     nutze std::zeit::SystemZeit;
     
     fk einstieg() {
-        lass anzahl = 1_000_000;
+        lass anzahl = 100_000_000;
         lass liste = (0..anzahl)
             .zuordnen(|_| zufall::<u16>())
             .sammeln::<Vektor<_>>();
@@ -32,14 +34,12 @@ rost::rost! {
         behaupte_gleich!(liste_1, liste_2, "Die Listen sind nicht gleich!");
     }
 
-    
-
     struktur Sortierung;
 
     umstz Sortierung{
         fk zähl_sortierung<T>(scheibe: &änd [T]) -> Ergebnis<(), FehlerArt>
         wo 
-            T: PartialOrdnung + Kopieren
+            T: Kopieren + Hinein<usize>
         {
             lass anzahl_stücke = größe_von::<T>() * 8;
             wenn anzahl_stücke > 32 {
@@ -49,19 +49,8 @@ rost::rost! {
             lass anzahl_eimer = 1 << anzahl_stücke;
             lass änd eimer = vec![0; anzahl_eimer];
 
-            für wert in scheibe.wieder() {
-                lass byte_liste = gefährlich {
-                    std::scheibe::aus_rohen_stücken(
-                        (wert als *konstante T) als *konstante u8,
-                        größe_von::<T>(),
-                    )
-                };
-                lass index = byte_liste.wieder()
-                    .nehme(8)
-                    .drehe()
-                    .falte(0, |acc, &byte| {
-                        (acc << 8) | byte als usize
-                    });
+            für &wert in scheibe.wieder() {
+                lass index: usize = wert.hinein();
                 eimer[index] += 1;        
             }
 

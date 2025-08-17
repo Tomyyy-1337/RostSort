@@ -127,7 +127,7 @@ fn replace_ident(ident: Ident) -> Option<TokenTree> {
         "zeit" => "time",
         "SystemZeit" => "SystemTime",
         "zeiger" => "ptr",
-        
+        "Hinein" => "Into",
         _ => &ident_str,
     };
 
