@@ -73,7 +73,9 @@ fn replace_ident(ident: Ident) -> Option<TokenTree> {
         "summe" => "sum",
         "zeilen" => "lines",
         "drehen" | "drehe" => "rev",
+        "füllen" => "fill",
 
+        
         // ordering
         "vgl" => "cmp",
         "Ordnung" => "Ordering",
@@ -114,7 +116,15 @@ fn replace_ident(ident: Ident) -> Option<TokenTree> {
         "hinein" => "into",
         "wahr" => "true",
         "aufzählung" | "aufzaehlung" => "enum",
-
+        
+        "klonen" => "clone",
+        "vergangen" => "elapsed",
+        "jetzt" => "now",
+        "zufall" | "zufällig" | "zufaellige" => "random",
+        "größe_von" | "groesse_von" => "size_of",
+        "aus_rohen_stücken" | "aus_rohen_stuecken" => "from_raw_parts",
+        "lese" => "read",
+        
         _ => &ident_str,
     };
 

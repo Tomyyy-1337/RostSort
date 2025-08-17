@@ -3,16 +3,16 @@ rost::rost! {
         lass anzahl = 1_000_000;
 
         lass liste = (0..anzahl)
-            .zuordnen(|_| rand::random::<u16>())
+            .zuordnen(|_| rand::zufall::<u16>())
             .sammeln::<Vektor<_>>();
 
-        lass änd liste_1 = liste.clone();
+        lass änd liste_1 = liste.klonen();
 
-        lass start_zeit = std::time::SystemTime::now();
+        lass start_zeit = std::time::SystemTime::jetzt();
 
         lass ergebis = Sortierung::zähl_sortierung(&mut liste_1);
 
-        lass dauer = start_zeit.elapsed().unwrap();
+        lass dauer = start_zeit.vergangen().auspacken();
 
         entspreche ergebis {
             Gut(_) => ausgabe!("Zähl-Sortierung erfolgreich!"),
@@ -24,13 +24,13 @@ rost::rost! {
         
         ausgabe!("Zeit für Zähl-Sortierung: {:?}", dauer);
 
-        lass änd liste_2 = liste.clone();
+        lass änd liste_2 = liste.klonen();
 
-        lass start_zeit = std::time::SystemTime::now();
+        lass start_zeit = std::time::SystemTime::jetzt();
 
         liste_2.sort_unstable();
 
-        lass dauer = start_zeit.elapsed().unwrap();
+        lass dauer = start_zeit.vergangen().auspacken();
         ausgabe!("Zeit für Standard-Sortierung: {:?}", dauer);
 
         behaupte_gleich!(liste_1, liste_2, "Die Listen sind nicht gleich!");
@@ -43,9 +43,9 @@ rost::rost! {
     umstz Sortierung{
         fk zähl_sortierung<T>(scheibe: &änd [T]) -> Ergebnis<(), FehlerArt>
         wo 
-            T: PartialOrdnung 
+            T: PartialOrdnung + Kopieren
         {
-            lass anzahl_stücke = std::mem::size_of::<T>() * 8;
+            lass anzahl_stücke = std::mem::größe_von::<T>() * 8;
 
             wenn anzahl_stücke > 32 {
                 zurückgebe Fehler(FehlerArt::TypeTooLarge);
@@ -57,11 +57,11 @@ rost::rost! {
 
             für wert in scheibe.wieder() {
                 gefährlich {
-                    let arr = std::slice::from_raw_parts(
+                    let byte_liste = std::slice::aus_rohen_stücken(
                         (wert als *konstante T) als *konstante u8,
-                        std::mem::size_of::<T>(),
+                        std::mem::größe_von::<T>(),
                     );
-                    let index = arr.wieder()
+                    let index = byte_liste.wieder()
                         .nehme(8)
                         .drehe()
                         .falte(0, |acc, &byte| {
@@ -71,15 +71,12 @@ rost::rost! {
                 }
             }
 
-            lass änd j = 0;
+            lass mut j = 0;
             für i in 0..anzahl_eimer {
-                für _ in 0..eimer[i] {
-                    gefährlich {
-                        lass wert = std::ptr::read(&i als *konstante usize als *konstante T);
-                        scheibe[j] = wert;
-                        j += 1;
-                    }
-                }
+                lass wert = gefährlich { std::ptr::lese(&i als *konstante usize als *konstante T) };
+                lass anzahl = eimer[i];
+                scheibe[j..j+anzahl].füllen(wert);
+                j += anzahl;                
             }    
             zurückgebe Gut(());
         }
