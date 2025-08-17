@@ -1,5 +1,3 @@
-use std::usize;
-
 rost::rost! { 
     nutze rand::zufall;
     nutze std::zeit::SystemZeit;
