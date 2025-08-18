@@ -74,6 +74,7 @@ fn replace_ident(ident: Ident) -> Option<TokenTree> {
         "zeilen" => "lines",
         "drehen" | "drehe" => "rev",
         "füllen" => "fill",
+        "indizieren" | "indiziere" => "enumerate",
 
         
         // ordering
